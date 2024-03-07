@@ -1,10 +1,101 @@
+# https://backstage.io/docs/features/software-catalog/descriptor-format/#kind-api
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: iaas-api-dev
+  description: Dev API to manage lifecycle of resources on SDN PoP IaaS v1
+  links:
+    - title: Documentation of "Evolution Platform - IaaS - Dev v1.0" on Orange Developer Inside (ODI)
+      url: https://developer-inside.sso.infra.ftgroup/apis/evolution-platform-iaas-dev/?version=1.0
+      icon: api
+  tags:
+    - evolve
+    - orchestration
+    - crossplane
+    - provider
+    - iaas
+spec:
+  type: openapi
+  lifecycle: experimental
+  domain: evolve-orchestration
+  owner: group:evolve-crossplane-poc
+  system: crossplane
+  definition:
+    $text: https://gitlab.tech.orange/evolution-platform/crossplane/provider-iaas/-/blob/main/swagger/consumed/iaas_dev_swagger.yaml?ref_type=heads
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format/#kind-api
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: iaas-api-e2e-ci
+  description: API to manage lifecycle of resources on E2E CI environments of SDN PoP IaaS v1
+  links:
+    - title: Documentation of "Evolution Platform - IaaS - E2E – CI v1.0" on Orange Developer Inside (ODI)
+      url: https://developer-inside.sso.infra.ftgroup/apis/evolution-platform-iaas-e2e-ci/?version=1.0
+      icon: api
+  tags:
+    - evolve
+    - orchestration
+    - crossplane
+    - provider
+    - iaas
+spec:
+  type: openapi
+  lifecycle: experimental
+  domain: evolve-orchestration
+  owner: group:evolve-crossplane-poc
+  system: crossplane
+  definition:
+    $text: https://gitlab.tech.orange/evolution-platform/crossplane/provider-iaas/-/blob/main/swagger/consumed/iaas_e2e_ci_swagger.yaml?ref_type=heads
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format/#kind-api
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: evolve-crossplane-provider-iaas-api
+  description: K8S API to manage lifecycle of SDN PoP IaaS v1 resources such as Virtual Machines, Virtual Networks, Security Groups, ... with Crossplane
+  tags:
+    - evolve
+    - orchestration
+    - crossplane
+    - provider
+    - iaas
+spec:
+  type: openapi
+  lifecycle: experimental
+  domain: evolve-orchestration
+  owner: group:evolve-crossplane-poc
+  system: crossplane
+  definition:
+    $text: https://gitlab.tech.orange/evolution-platform/crossplane/provider-iaas/-/blob/main/swagger/produced/iaas_provider_swagger.json?ref_type=heads
+---
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: demo4
+  name: evolve-crossplane-iaas-provider
+  description: Crossplane provider to manage lifecycle of resources on SDN PoP IaaS v1
   annotations:
-    github.com/project-slug: arnavrazdann/demo4
+    backstage.io/adr-location: architecture-decision-records
+    backstage.io/techdocs-ref: dir:.
+  links:
+  - url: https://gitlab.tech.orange/evolution-platform/crossplane/provider-iaas
+    title: Gitlab Repo
+    icon: gitlab
+  tags:
+    - evolve
+    - orchestration
+    - crossplane
+    - provider
+    - iaas
 spec:
-  type: other
-  lifecycle: unknown
-  owner: innn
+  type: service
+  lifecycle: experimental
+  owner: group:evolve-crossplane-poc
+  system: crossplane
+  dependsOn:
+    - resource:caas-cnp-cluster
+  providesApis:
+    - evolve-crossplane-provider-iaas-api
+  consumesApis:
+    - iaas-api-dev
+    - iaas-api-e2e-ci
